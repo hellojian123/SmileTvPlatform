@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/mvc
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="classpath:beans.xml"/>
+
+    <!-- 注册mvc的注解驱动-->
+    <mvc:annotation-driven />
+
+    <!--注册注解扫描器-->
+    <!--<context:component-scan base-package="junit.test"/>-->
+
+    <!--配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!--配置文件上传解析器(id必须是multipartResolve)-->
+    <!--注意文件上传解析器需要commons-io包和commons-fileupload包的支持，必须引入-->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        &lt;!&ndash;设置文件上传的最大值(以byte为单位)&ndash;&gt;
+        <property name="maxUploadSize" value="1024000"/>
+    </bean>-->
+
+    <!--配置拦截器-->
+   <!-- <mvc:interceptors>
+        <mvc:interceptor>
+            &lt;!&ndash;对某一模块进行拦截：/myPath/**  //myPath 是命名空间
+                对全部进行拦截: /**        &ndash;&gt;
+            <mvc:mapping path="/**"/>
+            <bean class="com.isoft.interceptor.TestInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+</beans>

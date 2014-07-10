@@ -1,0 +1,28 @@
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+/target
+target/
+.settings/
+.idea/
+doc/
+~/
+
+*.class
+*.iml
+*.tmp
+
+.project
+.classpath
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+
+
+
+

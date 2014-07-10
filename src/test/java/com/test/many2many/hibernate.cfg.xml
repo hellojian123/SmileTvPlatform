@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.url">jdbc:mysql://localhost:3306/many2many</property>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="connection.username" >root</property>
+    <property name="connection.password">root</property>
+
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+
+    <!--配置c3p0连接池 -->
+    <property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+    <property name="hibernate.c3p0.max_size">20</property>
+    <property name="hibernate.c3p0.min_size">5</property>
+    <property name="hibernate.c3p0.acquire_increment">5</property>
+    <property name="hibernate.c3p0.timeout">300</property>
+    <property name="hibernate.c3p0.max_statements">100</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+
+<!--
+    &lt;!&ndash;配置二级缓存&ndash;&gt;
+    <property name="hibernate.cache.use_second_level_cache">true</property>
+    <property name="hibernate.cache.use_query_cache">true</property>
+	&lt;!&ndash;配置RegionFactory为Ehcache的RegionFactory&ndash;&gt;
+	<property name="cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+-->
+
+<!--
+    &lt;!&ndash;基于hbm.xml配置文件的配置&ndash;&gt;
+	<mapping resource="com/test/many2many/Student.hbm.xml" />
+	<mapping resource="com/test/many2many/Teacher.hbm.xml" />
+-->
+
+    <!--基于annotation注解的配置-->
+    <mapping class="com.test.many2many.Student" />
+    <mapping class="com.test.many2many.Teacher" />
+
+<!--
+	&lt;!&ndash;配置类级别二级缓存&ndash;&gt;
+	<class-cache class="net.alex.cache.Customer" usage="read-write" />
+	<class-cache class="net.alex.cache.Order" usage="read-write" />
+
+	<collection-cache collection="net.alex.cache.Customer.orders" usage="read-write" />
+-->
+
+  </session-factory>
+</hibernate-configuration>

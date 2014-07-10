@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			  http://www.springframework.org/schema/beans/spring-beans.xsd
+			  http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context.xsd
+              http://www.springframework.org/schema/tx
+              http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--指定jdbc分散配置的位置-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--配置c3p0数据源-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverclass}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <property name="maxPoolSize" value="${c3p0.pool.size.max}"/>
+        <property name="minPoolSize" value="${c3p0.pool.size.min}"/>
+        <property name="initialPoolSize" value="${c3p0.pool.size.init}"/>
+        <property name="acquireIncrement" value="${c3p0.pool.size.increment}"/>
+    </bean>
+
+    <!--hibernate配置，本地会话工厂bean，整合hibernate核心-->
+    <bean id="sessonFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--配置hibernate的自身属性-->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            </props>
+        </property>
+        <!--hibernate 扫描hibernate的注解以支持注解开发-->
+        <property name="packagesToScan">
+            <list>
+                <value>com.smiletv.bean</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--hibernate事物管理器，在service层上实现事务管理-->
+    <bean id="htm" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessonFactory"/>
+    </bean>
+
+
+    <bean id="deviceDao" class="com.smiletv.dao.impl.DeviceDaoImpl"/>
+
+    <bean id="deviceService" class="com.smiletv.service.impl.DeviceServiceImpl"/>
+
+
+    <!--负责扫描使用了 JSR-250 注解的 Bean，并对它们进行相应的操作，如@Resource注解-->
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+
+    <!-- Autowired注解后处理器，对标注 @Autowired 的 Bean 进行自动注入 -->
+    <!-- <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> -->
+
+    <!--事务管理注解支持驱动-->
+    <tx:annotation-driven transaction-manager="htm"/>
+</beans>
