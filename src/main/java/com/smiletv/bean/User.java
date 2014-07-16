@@ -93,4 +93,23 @@ public class User implements Serializable{
     public void setCheckIns(Set<CheckIn> checkIns) {
         this.checkIns = checkIns;
     }
+
+    /**
+     * 判断这些user属性是否有可用(不为null，值不为null，值不为"")值.
+     * @return
+     */
+    public boolean empty(){
+        String cmpStr = this.userName+this.nickName+this.userPhone;
+        if(cmpStr == null){
+            return true;        //返回true表示user没有值
+        }
+        if(cmpStr.trim().equals("null")){
+            return true;
+        }
+        if(cmpStr.trim().equals("")){
+            return true;
+        }
+        return false;           //返回false表示user有值
+    }
+
 }

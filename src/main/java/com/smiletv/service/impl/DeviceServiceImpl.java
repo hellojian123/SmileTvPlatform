@@ -1,8 +1,9 @@
 package com.smiletv.service.impl;
 
+import com.smiletv.bean.DevAuthInfo;
 import com.smiletv.bean.Device;
+import com.smiletv.bean.User;
 import com.smiletv.dao.DeviceDao;
-import com.smiletv.dao.impl.DeviceDaoImpl;
 import com.smiletv.service.DeviceService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.dom4j.Attribute;
@@ -18,7 +19,6 @@ import javax.annotation.Resource;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -73,8 +73,51 @@ public class DeviceServiceImpl implements DeviceService {
 
     }
 
+    /**
+     * 第一次开机请求过来激活快乐小盒
+     * @param dev
+     */
+    @Override
+    public boolean activeSmileBox(Device dev) {
+        if(dev==null){
+            return false;
+        }
 
+        return deviceDao.activeDevice(dev);
+    }
 
+    /**
+     * 认证盒子的合法性，合法返回true，非法返回false
+     * @param dev
+     * @return
+     */
+    @Override
+    public boolean smileBoxAuthentication(Device dev) {
+        if(dev==null){
+            return false;
+        }
+
+        //从数据库查找该盒子
+        Device device =  deviceDao.findDevice(dev);
+        if(device==null){ //如果从数据库找不到这个盒子，说明非法。通过deiviceId，mcid，有线mac，无线mac去数据库匹配寻找。
+            return false;
+        }
+
+        DevAuthInfo authInfo = device.getDevAuthInfo();
+        if(!authInfo.isActiStatus()){ //如果激活信息为没有激活，则该盒子非法。
+            return false;
+        }
+
+        if(!dev.getUniqueID().equals(device.getUniqueID())){ //如果uuid不匹配，则该盒子非法
+            return false;
+        }
+
+        //绑定用户和盒子
+        User user = dev.getUser();
+        deviceDao.bandUserAndBox(device,user);
+
+        return true;
+    }
 
 
 }

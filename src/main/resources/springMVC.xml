@@ -16,13 +16,14 @@
     <mvc:annotation-driven />
 
     <!--注册注解扫描器-->
-    <!--<context:component-scan base-package="junit.test"/>-->
+    <context:component-scan base-package="com.smiletv.action"/>
 
     <!--配置视图解析器-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/page/"></property>
+        <property name="prefix" value="/WEB-INF/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
+
 
     <!--配置文件上传解析器(id必须是multipartResolve)-->
     <!--注意文件上传解析器需要commons-io包和commons-fileupload包的支持，必须引入-->

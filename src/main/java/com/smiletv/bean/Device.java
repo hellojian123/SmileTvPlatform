@@ -116,4 +116,22 @@ public class Device  implements Serializable{
     public void setDevAuthInfo(DevAuthInfo devAuthInfo) {
         this.devAuthInfo = devAuthInfo;
     }
+
+    /**
+     * 判断这些device属性是否有可用(不为null，值不为null，值不为"")值.
+     * @return
+     */
+    public boolean empty(){
+        String cmpStr = this.deviceID+this.machineCode+this.wiredMAC+this.wirelessMAC;
+        if(cmpStr == null){
+            return true;        //返回true表示user没有值
+        }
+        if(cmpStr.trim().equals("null")){
+            return true;
+        }
+        if(cmpStr.trim().equals("")){
+            return true;
+        }
+        return false;           //返回false表示user有值
+    }
 }
