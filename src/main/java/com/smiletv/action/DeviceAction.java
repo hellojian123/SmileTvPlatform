@@ -3,6 +3,7 @@ package com.smiletv.action;
 import com.smiletv.bean.*;
 import com.smiletv.bean.RequestParam;
 import com.smiletv.service.DeviceService;
+import com.smiletv.utils.WebUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,8 @@ import java.util.Date;
  */
 
 @Controller
-@RequestMapping("/device/management")
-public class DeviceManageAction {
+@RequestMapping("/device")
+public class DeviceAction {
 
     @Resource(name = "deviceService")
     DeviceService deviceService;
@@ -35,28 +36,22 @@ public class DeviceManageAction {
      *      5，mcid是否匹配。
      *      6，uuId是否匹配。
      */
-    @RequestMapping(value = "/terminal/authentication",method = RequestMethod.POST)
-    public @ResponseBody ResponseResult terminalAuthentication(@RequestBody RequestParam requestParam){
-
+    @RequestMapping(value = "/authentication",method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseResult terminalAuthentication(@RequestBody RequestParam requestParam){
         ResponseResult result = new ResponseResult();
         result.setRequestType("TerminalAuthentication");
-        String reqType = requestParam.getRequestType();
 
         //判断是否是认证请求
-        if(reqType==null|reqType.trim().equals("")){
+        if(!WebUtil.reqBodyValidate("TerminalAuthentication",requestParam)){
             result.setResult(-1);
             return result;
         }
 
-        if(!reqType.trim().equalsIgnoreCase("TerminalAuthentication")){
-            result.setResult(-1);
-            return result;
-        }
-
+        //解析请求体封装到相应实体中。
         User user = new User();
         Device device = new Device();
         DevAuthInfo authInfo = new DevAuthInfo();
-        //将请求的参数解析出来封装到各个bean。
         try {
             BeanUtils.copyProperties(user,requestParam);
             BeanUtils.copyProperties(device,requestParam);

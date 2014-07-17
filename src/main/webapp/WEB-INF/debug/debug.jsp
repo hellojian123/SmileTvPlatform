@@ -18,7 +18,7 @@
             /**
             *使用jquery发送json格式的数据。使用$.ajax()方法。其它如$.getJSON()等方法会将发送类容
             *会被转换成查询字符串。例如：
-            * http://localhost/service/device/management/terminal/authentication?{%22userPhone%22:%22%22,
+            * http://localhost/service/device/authentication?{%22userPhone%22:%22%22,
             *      %22userName%22:%22%22,%22uniqueID%22:%2200000000-3cdb-e722-ffff-ffffd6d066c7%22}
             *
             * $.ajax()方法介绍：
@@ -63,7 +63,7 @@
             $("#mybutton").click(function(){
                 var jsonStr = $.toJSON(requestParam);   ////调用j-query.json 库，将其转换为json
                 $.ajax({
-                    url:"${ctx}/service/device/management/terminal/authentication",
+                    url:"${ctx}/service/device/authentication",
                     type:"POST",
                     data:jsonStr,
                     contentType:'application/json;charset=utf8',

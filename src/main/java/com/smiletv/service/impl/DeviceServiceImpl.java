@@ -112,9 +112,11 @@ public class DeviceServiceImpl implements DeviceService {
             return false;
         }
 
-        //绑定用户和盒子
-        User user = dev.getUser();
-        deviceDao.bandUserAndBox(device,user);
+        //如果设备没有绑定用户则绑定用户和盒子
+        if(device.getUser()==null){
+            User user = dev.getUser();
+            deviceDao.bandUserAndBox(device,user);
+        }
 
         return true;
     }

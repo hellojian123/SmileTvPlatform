@@ -99,11 +99,12 @@ public class User implements Serializable{
      * @return
      */
     public boolean empty(){
+        //注意，用户是否为空只关心用户信息不关心randkey和password，所以不加randkey和password。
         String cmpStr = this.userName+this.nickName+this.userPhone;
         if(cmpStr == null){
             return true;        //返回true表示user没有值
         }
-        if(cmpStr.trim().equals("null")){
+        if(cmpStr.trim().matches("^(null)++$")){
             return true;
         }
         if(cmpStr.trim().equals("")){

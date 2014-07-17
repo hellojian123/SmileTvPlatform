@@ -3,12 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 			  http://www.springframework.org/schema/beans/spring-beans.xsd
 			  http://www.springframework.org/schema/context
               http://www.springframework.org/schema/context/spring-context.xsd
               http://www.springframework.org/schema/tx
-              http://www.springframework.org/schema/tx/spring-tx.xsd">
+              http://www.springframework.org/schema/tx/spring-tx.xsd
+              http://www.springframework.org/schema/aop
+              http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--指定jdbc分散配置的位置-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -53,16 +56,17 @@
 
 
     <bean id="deviceDao" class="com.smiletv.dao.impl.DeviceDaoImpl"/>
-
     <bean id="deviceService" class="com.smiletv.service.impl.DeviceServiceImpl"/>
+    <bean id="userService" class="com.smiletv.service.impl.UserServiceImpl"/>
+    <bean id="userDao" class="com.smiletv.dao.impl.UserDaoImpl"/>
 
 
     <!--负责扫描使用了 JSR-250 注解的 Bean，并对它们进行相应的操作，如@Resource注解-->
     <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
-
     <!-- Autowired注解后处理器，对标注 @Autowired 的 Bean 进行自动注入 -->
     <!-- <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> -->
-
     <!--事务管理注解支持驱动-->
     <tx:annotation-driven transaction-manager="htm"/>
+    <!--开启暴露Aop代理到ThreadLocal支持（事物的注解风格使用）-->
+    <!--<aop:aspectj-autoproxy expose-proxy="true"/>-->
 </beans>

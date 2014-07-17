@@ -122,11 +122,11 @@ public class Device  implements Serializable{
      * @return
      */
     public boolean empty(){
-        String cmpStr = this.deviceID+this.machineCode+this.wiredMAC+this.wirelessMAC;
+        String cmpStr = this.deviceID+this.machineCode+this.wiredMAC+this.wirelessMAC+this.uniqueID;
         if(cmpStr == null){
             return true;        //返回true表示user没有值
         }
-        if(cmpStr.trim().equals("null")){
+        if(cmpStr.trim().matches("^(null)++$")){  //null出现一次或多次表示user没有值
             return true;
         }
         if(cmpStr.trim().equals("")){
